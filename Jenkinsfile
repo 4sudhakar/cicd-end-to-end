@@ -11,7 +11,7 @@ pipeline {
         stage('Checkout'){
            steps {
                 git credentialsId: '7479ff61-dc76-4a5b-9703-2da85acce88c', 
-                url: https://github.com/4sudhakar/cicd-end-to-end',
+                url: 'https://github.com/4sudhakar/cicd-end-to-end',
                 branch: 'main'
            }
         }
@@ -49,7 +49,7 @@ pipeline {
         stage('Update K8S manifest & push to Repo'){
             steps {
                 script{
-                    withCredentials([usernamePassword(credentialsId: '7479ff61-dc76-4a5b-9703-2da85acce88c', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                    withCredentials([usernamePassword(credentialsId: '7479ff61-dc76-4a5b-9703-2da85acce88c', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'admin')]) {
                         sh '''
                         cat deploy.yaml
                         sed -i '' "s/32/${BUILD_NUMBER}/g" deploy.yaml
@@ -57,7 +57,7 @@ pipeline {
                         git add deploy.yaml
                         git commit -m 'Updated the deploy yaml | Jenkins Pipeline'
                         git remote -v
-                        git push https://github.com/iam-veeramalla/cicd-demo-manifests-repo.git HEAD:main
+                        git push https://github.com/4sudhakar/cicd-end-to-end/tree/main/deploy HEAD:main
                         '''                        
                     }
                 }
